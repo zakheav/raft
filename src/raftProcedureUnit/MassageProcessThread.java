@@ -8,7 +8,6 @@ import communicationUnit.MassageQueue;
 import communicationUnit.SendTask;
 import communicationUnit.SocketList;
 import communicationUnit.ThreadPool;
-import serverUnit.LogEntry;
 import serverUnit.Node;
 import timerUnit.TimerThread;
 import util.JSON;
@@ -39,8 +38,8 @@ public class MassageProcessThread implements Runnable {
 					int lastLogTerm = (int) msg.get(3);
 
 					int myTerm = Node.getInstance().server.currentTerm;
-					int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
-					int myLastLogTerm = Node.getInstance().server.get_lastLogTerm();
+					int myLastLogIndex = Node.getInstance().server.log.get_lastLogIndex();
+					int myLastLogTerm = Node.getInstance().server.log.get_lastLogTerm();
 
 					List<Object> msg1 = new ArrayList<Object>();// 选票回执
 					if (term > myTerm) {
@@ -102,8 +101,8 @@ public class MassageProcessThread implements Runnable {
 					Node.getInstance().server.grantNum = 1;// 重置grantNum，准备选举
 
 					int myTerm = Node.getInstance().server.currentTerm;
-					int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
-					int myLastLogTerm = Node.getInstance().server.get_lastLogTerm();
+					int myLastLogIndex = Node.getInstance().server.log.get_lastLogIndex();
+					int myLastLogTerm = Node.getInstance().server.log.get_lastLogTerm();
 
 					List<Object> msg0 = new ArrayList<Object>();
 					msg0.add(0);
@@ -134,8 +133,8 @@ public class MassageProcessThread implements Runnable {
 					int lastLogTerm = (int) msg.get(3);
 
 					int myTerm = Node.getInstance().server.currentTerm;
-					int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
-					int myLastLogTerm = Node.getInstance().server.get_lastLogTerm();
+					int myLastLogIndex = Node.getInstance().server.log.get_lastLogIndex();
+					int myLastLogTerm = Node.getInstance().server.log.get_lastLogTerm();
 
 					List<Object> msg1 = new ArrayList<Object>();// 选票回执
 					if (term > myTerm) {
@@ -172,8 +171,8 @@ public class MassageProcessThread implements Runnable {
 							Node.getInstance().server.status = 2;// 自己成为leader
 							TimerThread.getInstance().reset_leaderTimer();// 重置Leader计时器
 							for (int i = 0; i < Node.getInstance().nodeAddrListSize; ++i) {// 初始化nextIndex[]
-								Node.getInstance().server.nextIndex[i] = Node.getInstance().server.get_lastLogIndex()
-										+ 1;
+								Node.getInstance().server.nextIndex[i] = Node.getInstance().server.log
+										.get_lastLogIndex() + 1;
 							}
 							System.out.println("i am leader");
 						}
@@ -216,8 +215,8 @@ public class MassageProcessThread implements Runnable {
 					Node.getInstance().server.grantNum = 1;// 重置grantNum，准备重新选举
 
 					int myTerm = Node.getInstance().server.currentTerm;
-					int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
-					int myLastLogTerm = Node.getInstance().server.get_lastLogTerm();
+					int myLastLogIndex = Node.getInstance().server.log.get_lastLogIndex();
+					int myLastLogTerm = Node.getInstance().server.log.get_lastLogTerm();
 
 					List<Object> msg0 = new ArrayList<Object>();
 					msg0.add(0);
@@ -248,8 +247,8 @@ public class MassageProcessThread implements Runnable {
 					int lastLogTerm = (int) msg.get(3);
 
 					int myTerm = Node.getInstance().server.currentTerm;
-					int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
-					int myLastLogTerm = Node.getInstance().server.get_lastLogTerm();
+					int myLastLogIndex = Node.getInstance().server.log.get_lastLogIndex();
+					int myLastLogTerm = Node.getInstance().server.log.get_lastLogTerm();
 
 					List<Object> msg1 = new ArrayList<Object>();// 选票回执
 					if (term > myTerm) {
@@ -333,12 +332,12 @@ public class MassageProcessThread implements Runnable {
 						if (i != myNodeIdx) {
 							List<Object> msg2 = new ArrayList<Object>();
 							int nextIndex = Node.getInstance().server.nextIndex[i];
-							int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
+							int myLastLogIndex = Node.getInstance().server.log.get_lastLogIndex();
 
 							int myTerm = Node.getInstance().server.currentTerm;
 							int prevLogIndex = nextIndex - 1;
-							int prevLogTerm = Node.getInstance().server.get_logByIndex(prevLogIndex).term;
-							int leaderCommit = Node.getInstance().server.commitIndex;
+							int prevLogTerm = Node.getInstance().server.log.get_logByIndex(prevLogIndex).term;
+							int leaderCommit = Node.getInstance().server.log.commitIndex;
 							int entriesNum = myLastLogIndex - nextIndex + 1 > 0 ? myLastLogIndex - nextIndex + 1 : 0;
 							msg2.add(2);
 							msg2.add(myTerm);
@@ -347,16 +346,13 @@ public class MassageProcessThread implements Runnable {
 							msg2.add(leaderCommit);
 							msg2.add(entriesNum);
 							for (int j = nextIndex; j <= myLastLogIndex; ++j) {
-								msg2.add(Node.getInstance().server.get_logByIndex(j).command);
+								msg2.add(Node.getInstance().server.log.get_logByIndex(j).command);
 							}
 							for (int j = nextIndex; j <= myLastLogIndex; ++j) {
-								msg2.add(Node.getInstance().server.get_logByIndex(j).commandId);
+								msg2.add(Node.getInstance().server.log.get_logByIndex(j).commandId);
 							}
 							for (int j = nextIndex; j <= myLastLogIndex; ++j) {
-								msg2.add(Node.getInstance().server.get_logByIndex(j).term);
-							}
-							for (int j = nextIndex; j <= myLastLogIndex; ++j) {
-								msg2.add(Node.getInstance().server.get_logByIndex(j).index);
+								msg2.add(Node.getInstance().server.log.get_logByIndex(j).term);
 							}
 
 							String massage2 = JSON.ArrayToJSON(msg2);
@@ -379,11 +375,9 @@ public class MassageProcessThread implements Runnable {
 					int myTerm = Node.getInstance().server.currentTerm;
 					String command = (String) msg.get(1);
 					String commandId = (String) msg.get(2);
-					int lastIndex = Node.getInstance().server.get_lastLogIndex();
 					SocketList.getInstance().move_clientSocket(msgSocket, commandId);
 
-					LogEntry logEntry = new LogEntry(myTerm, command, commandId, lastIndex+1);
-					Node.getInstance().server.log.add(logEntry);// 向log中加入新的logEntry
+					Node.getInstance().server.log.add_logEntry(myTerm, command, commandId);// 向log中加入新的logEntry
 				}
 			}
 		}
@@ -396,18 +390,17 @@ public class MassageProcessThread implements Runnable {
 		int leaderCommit = (int) msg.get(4);
 		int entriesNum = (int) msg.get(5);
 
-		if (Node.getInstance().server.get_logByIndex(prevLogIndex) != null
-				&& Node.getInstance().server.get_logByIndex(prevLogIndex).term == prevLogTerm) {
-			
-			Node.getInstance().server.deleteLogEntry(prevLogIndex + 1);// 把自己log中prevLogIndex之后的内容删除掉
+		if (Node.getInstance().server.log.get_logByIndex(prevLogIndex) != null
+				&& Node.getInstance().server.log.get_logByIndex(prevLogIndex).term == prevLogTerm) {
+
+			Node.getInstance().server.log.delete_logEntry(prevLogIndex + 1);// 把自己log中prevLogIndex之后的内容删除掉
 
 			for (int entriesIdx = 6; entriesIdx <= 5 + entriesNum; ++entriesIdx) {
 				String command = (String) msg.get(entriesIdx);
 				String commandId = (String) msg.get(entriesIdx + entriesNum);
 				int logTerm = (int) msg.get(entriesIdx + 2 * entriesNum);
-				int index = (int) msg.get(entriesIdx + 3 * entriesNum);
-				LogEntry logEntry = new LogEntry(logTerm, command, commandId, index);
-				Node.getInstance().server.log.add(logEntry);
+
+				Node.getInstance().server.log.add_logEntry(logTerm, command, commandId);
 			} // 向自己的log中添加新的entries
 
 			// 发送成功消息
@@ -415,16 +408,16 @@ public class MassageProcessThread implements Runnable {
 			msg3.add(3);
 			msg3.add(term);
 			msg3.add(true);
-			msg3.add(Node.getInstance().server.get_lastLogIndex());
+			msg3.add(Node.getInstance().server.log.get_lastLogIndex());
 			msg3.add(null);
 			msg3.add(Node.getInstance().nodeId);
 			String massage3 = JSON.ArrayToJSON(msg3);
 			SendTask task = new SendTask(msgSocket, massage3);
 			ThreadPool.getInstance().addTasks(task);
 
-			if (leaderCommit > Node.getInstance().server.commitIndex) {
-				Node.getInstance().server.commitIndex = Math.min(leaderCommit,
-						Node.getInstance().server.get_lastLogIndex());
+			if (leaderCommit > Node.getInstance().server.log.commitIndex) {
+				Node.getInstance().server.log.commitIndex = Math.min(leaderCommit,
+						Node.getInstance().server.log.get_lastLogIndex());
 			}
 		} else {
 			// 回复log不匹配

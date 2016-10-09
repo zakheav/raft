@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Vector;
@@ -25,14 +26,14 @@ public class DBpool {
 	private int maxPoolSize = 15;
 	private int nowTotalConnections = 10;
 
-	private static DBpool instance = new DBpool();
+	private static DBpool instance = new DBpool("log2");
 
 	private Queue<Connection> pool = new LinkedList<Connection>();
 	private Vector<Connection> connectionsInUse = new Vector<Connection>(commonPoolSize);
 
-	private DBpool() {
-		DBpool.url = "";
-		DBpool.user = "";
+	private DBpool(String dbName) {
+		DBpool.url = "jdbc:mysql://localhost:3306/"+dbName;
+		DBpool.user = "root";
 		DBpool.password = "";
 		try {
 			Class.forName(DBpool.driverClassName);
@@ -65,8 +66,8 @@ public class DBpool {
 		return driverClassName;
 	}
 
-	private ArrayList<Map<String, Object>> resultSet_to_obj(ResultSet r) {
-		ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+	private List<Map<String, Object>> resultSet_to_obj(ResultSet r) {
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		try {
 			ResultSetMetaData rsmd = r.getMetaData();
 			int numberOfColumns = rsmd.getColumnCount();
@@ -153,7 +154,7 @@ public class DBpool {
 		}
 	}
 
-	public ArrayList<Map<String, Object>> executeQuery(String queryString) {
+	public List<Map<String, Object>> executeQuery(String queryString) {
 		Connection conn = null;
 		Connection e_conn = null;
 		Statement stmt = null;
@@ -161,7 +162,7 @@ public class DBpool {
 		ResultSet rs = null;
 		ResultSet e_rs = null;
 		boolean connection_timeout = false;
-		ArrayList<Map<String, Object>> result = null;
+		List<Map<String, Object>> result = null;
 		try {
 			conn = getConnection();
 			stmt = conn.createStatement();

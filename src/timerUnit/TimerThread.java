@@ -11,7 +11,7 @@ public class TimerThread implements Runnable {
 	private static TimerThread instance = new TimerThread();
 
 	private TimerThread() {
-		this.timer = (int) (Math.random() * 50) + 15;
+		this.timer = (int) (Math.random() * 100) + 15;
 		this.timerCopy = timer;
 		this.leaderTimerCopy = (int) (Math.random() * 10) + 5;
 	}

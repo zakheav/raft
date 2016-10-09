@@ -7,6 +7,7 @@ public class LogEntry {
 		this.commandId = commandId;
 		this.index = index;
 	}
+	
 	public int term;
 	public String command;
 	public String commandId;
