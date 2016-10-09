@@ -39,8 +39,8 @@ public class MassageProcessThread implements Runnable {
 					int lastLogTerm = (int) msg.get(3);
 
 					int myTerm = Node.getInstance().server.currentTerm;
-					int myLastLogIndex = Node.getInstance().server.log.size() - 1;
-					int myLastLogTerm = Node.getInstance().server.log.get(myLastLogIndex).term;
+					int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
+					int myLastLogTerm = Node.getInstance().server.get_lastLogTerm();
 
 					List<Object> msg1 = new ArrayList<Object>();// 选票回执
 					if (term > myTerm) {
@@ -102,8 +102,8 @@ public class MassageProcessThread implements Runnable {
 					Node.getInstance().server.grantNum = 1;// 重置grantNum，准备选举
 
 					int myTerm = Node.getInstance().server.currentTerm;
-					int myLastLogIndex = Node.getInstance().server.log.size() - 1;
-					int myLastLogTerm = Node.getInstance().server.log.get(myLastLogIndex).term;
+					int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
+					int myLastLogTerm = Node.getInstance().server.get_lastLogTerm();
 
 					List<Object> msg0 = new ArrayList<Object>();
 					msg0.add(0);
@@ -134,8 +134,8 @@ public class MassageProcessThread implements Runnable {
 					int lastLogTerm = (int) msg.get(3);
 
 					int myTerm = Node.getInstance().server.currentTerm;
-					int myLastLogIndex = Node.getInstance().server.log.size() - 1;
-					int myLastLogTerm = Node.getInstance().server.log.get(myLastLogIndex).term;
+					int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
+					int myLastLogTerm = Node.getInstance().server.get_lastLogTerm();
 
 					List<Object> msg1 = new ArrayList<Object>();// 选票回执
 					if (term > myTerm) {
@@ -172,7 +172,8 @@ public class MassageProcessThread implements Runnable {
 							Node.getInstance().server.status = 2;// 自己成为leader
 							TimerThread.getInstance().reset_leaderTimer();// 重置Leader计时器
 							for (int i = 0; i < Node.getInstance().nodeAddrListSize; ++i) {// 初始化nextIndex[]
-								Node.getInstance().server.nextIndex[i] = Node.getInstance().server.log.size();
+								Node.getInstance().server.nextIndex[i] = Node.getInstance().server.get_lastLogIndex()
+										+ 1;
 							}
 							System.out.println("i am leader");
 						}
@@ -215,8 +216,8 @@ public class MassageProcessThread implements Runnable {
 					Node.getInstance().server.grantNum = 1;// 重置grantNum，准备重新选举
 
 					int myTerm = Node.getInstance().server.currentTerm;
-					int myLastLogIndex = Node.getInstance().server.log.size() - 1;
-					int myLastLogTerm = Node.getInstance().server.log.get(myLastLogIndex).term;
+					int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
+					int myLastLogTerm = Node.getInstance().server.get_lastLogTerm();
 
 					List<Object> msg0 = new ArrayList<Object>();
 					msg0.add(0);
@@ -247,8 +248,8 @@ public class MassageProcessThread implements Runnable {
 					int lastLogTerm = (int) msg.get(3);
 
 					int myTerm = Node.getInstance().server.currentTerm;
-					int myLastLogIndex = Node.getInstance().server.log.size() - 1;
-					int myLastLogTerm = Node.getInstance().server.log.get(myLastLogIndex).term;
+					int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
+					int myLastLogTerm = Node.getInstance().server.get_lastLogTerm();
 
 					List<Object> msg1 = new ArrayList<Object>();// 选票回执
 					if (term > myTerm) {
@@ -332,11 +333,11 @@ public class MassageProcessThread implements Runnable {
 						if (i != myNodeIdx) {
 							List<Object> msg2 = new ArrayList<Object>();
 							int nextIndex = Node.getInstance().server.nextIndex[i];
-							int myLastLogIndex = Node.getInstance().server.log.size() - 1;
+							int myLastLogIndex = Node.getInstance().server.get_lastLogIndex();
 
 							int myTerm = Node.getInstance().server.currentTerm;
 							int prevLogIndex = nextIndex - 1;
-							int prevLogTerm = Node.getInstance().server.log.get(prevLogIndex).term;
+							int prevLogTerm = Node.getInstance().server.get_logByIndex(prevLogIndex).term;
 							int leaderCommit = Node.getInstance().server.commitIndex;
 							int entriesNum = myLastLogIndex - nextIndex + 1 > 0 ? myLastLogIndex - nextIndex + 1 : 0;
 							msg2.add(2);
@@ -346,13 +347,16 @@ public class MassageProcessThread implements Runnable {
 							msg2.add(leaderCommit);
 							msg2.add(entriesNum);
 							for (int j = nextIndex; j <= myLastLogIndex; ++j) {
-								msg2.add(Node.getInstance().server.log.get(j).command);
+								msg2.add(Node.getInstance().server.get_logByIndex(j).command);
 							}
 							for (int j = nextIndex; j <= myLastLogIndex; ++j) {
-								msg2.add(Node.getInstance().server.log.get(j).commandId);
+								msg2.add(Node.getInstance().server.get_logByIndex(j).commandId);
 							}
 							for (int j = nextIndex; j <= myLastLogIndex; ++j) {
-								msg2.add(Node.getInstance().server.log.get(j).term);
+								msg2.add(Node.getInstance().server.get_logByIndex(j).term);
+							}
+							for (int j = nextIndex; j <= myLastLogIndex; ++j) {
+								msg2.add(Node.getInstance().server.get_logByIndex(j).index);
 							}
 
 							String massage2 = JSON.ArrayToJSON(msg2);
@@ -375,10 +379,10 @@ public class MassageProcessThread implements Runnable {
 					int myTerm = Node.getInstance().server.currentTerm;
 					String command = (String) msg.get(1);
 					String commandId = (String) msg.get(2);
-
+					int lastIndex = Node.getInstance().server.get_lastLogIndex();
 					SocketList.getInstance().move_clientSocket(msgSocket, commandId);
 
-					LogEntry logEntry = new LogEntry(myTerm, command, commandId);
+					LogEntry logEntry = new LogEntry(myTerm, command, commandId, lastIndex+1);
 					Node.getInstance().server.log.add(logEntry);// 向log中加入新的logEntry
 				}
 			}
@@ -392,17 +396,17 @@ public class MassageProcessThread implements Runnable {
 		int leaderCommit = (int) msg.get(4);
 		int entriesNum = (int) msg.get(5);
 
-		if (prevLogIndex < Node.getInstance().server.log.size()
-				&& Node.getInstance().server.log.get(prevLogIndex).term == prevLogTerm) {
-			for (int i = Node.getInstance().server.log.size() - 1; i > prevLogIndex; --i) {
-				Node.getInstance().server.log.remove(i);
-			} // 把自己log中prevLogIndex之后的内容删除掉
+		if (Node.getInstance().server.get_logByIndex(prevLogIndex) != null
+				&& Node.getInstance().server.get_logByIndex(prevLogIndex).term == prevLogTerm) {
+			
+			Node.getInstance().server.deleteLogEntry(prevLogIndex + 1);// 把自己log中prevLogIndex之后的内容删除掉
 
 			for (int entriesIdx = 6; entriesIdx <= 5 + entriesNum; ++entriesIdx) {
 				String command = (String) msg.get(entriesIdx);
 				String commandId = (String) msg.get(entriesIdx + entriesNum);
 				int logTerm = (int) msg.get(entriesIdx + 2 * entriesNum);
-				LogEntry logEntry = new LogEntry(logTerm, command, commandId);
+				int index = (int) msg.get(entriesIdx + 3 * entriesNum);
+				LogEntry logEntry = new LogEntry(logTerm, command, commandId, index);
 				Node.getInstance().server.log.add(logEntry);
 			} // 向自己的log中添加新的entries
 
@@ -411,7 +415,7 @@ public class MassageProcessThread implements Runnable {
 			msg3.add(3);
 			msg3.add(term);
 			msg3.add(true);
-			msg3.add(Node.getInstance().server.log.size() - 1);
+			msg3.add(Node.getInstance().server.get_lastLogIndex());
 			msg3.add(null);
 			msg3.add(Node.getInstance().nodeId);
 			String massage3 = JSON.ArrayToJSON(msg3);
@@ -420,7 +424,7 @@ public class MassageProcessThread implements Runnable {
 
 			if (leaderCommit > Node.getInstance().server.commitIndex) {
 				Node.getInstance().server.commitIndex = Math.min(leaderCommit,
-						Node.getInstance().server.log.size() - 1);
+						Node.getInstance().server.get_lastLogIndex());
 			}
 		} else {
 			// 回复log不匹配
