@@ -9,6 +9,7 @@ import util.DBpool;
 
 public class Log {
 	private LinkedList<LogEntry> log;
+	private LinkedList<String> recentAppliedCmd;// 最近提交过的命令
 	private boolean indexCacheDirty = false;
 	private boolean termCacheDirty = false;
 	private int lastLogIndexCache = -1;
@@ -29,11 +30,20 @@ public class Log {
 		lastLogIndexCache = o == null ? 0 : (Integer) o;
 
 		queryString = "select term from log where logIndex = " + lastLogIndexCache;
-		lastLogTermCache = DBpool.getInstance().executeQuery(queryString).isEmpty() ? 0
+		lastLogTermCache = DBpool.getInstance().executeQuery(queryString).isEmpty() ? 1
 				: (Integer) DBpool.getInstance().executeQuery(queryString).get(0).get("term");
 
 		this.commitIndex = get_lastLogIndex();
 		this.appliedIndex = this.commitIndex;
+
+		// 缓存最近提交过的log的commandId
+		this.recentAppliedCmd = new LinkedList<String>();
+		int temp = lastLogIndexCache - 10;
+		queryString = "select logIndex, commandId from log where logIndex > " + temp + " order by logIndex asc";
+		List<Map<String, Object>> results = DBpool.getInstance().executeQuery(queryString);
+		for (Map<String, Object> row : results) {
+			this.recentAppliedCmd.add((String) row.get("commandId"));
+		}
 	}
 
 	public synchronized int get_lastLogIndex() {
@@ -55,7 +65,7 @@ public class Log {
 		if (termCacheDirty) {
 			if (log.isEmpty()) {
 				String queryString = "select term from log where logIndex = " + get_lastLogIndex();
-				lastLogTermCache = DBpool.getInstance().executeQuery(queryString).isEmpty() ? 0
+				lastLogTermCache = DBpool.getInstance().executeQuery(queryString).isEmpty() ? 1
 						: (Integer) DBpool.getInstance().executeQuery(queryString).get(0).get("term");
 			} else {
 				lastLogTermCache = log.peekLast().term;
@@ -67,7 +77,7 @@ public class Log {
 	}
 
 	public synchronized LogEntry get_logByIndex(int index) {
-		if(index == 0) {
+		if (index == 0) {
 			return new LogEntry(0, null, null, 0);
 		}
 		if (log.isEmpty() || log.peekFirst().index > index) {
@@ -112,6 +122,24 @@ public class Log {
 	}
 
 	public synchronized void logClear() {// 清除不必要的log
+		Iterator<LogEntry> it = log.iterator();
+		while (it.hasNext()) {
+			if (it.next().index < appliedIndex / 2) {
+				it.remove();
+			}
+		}
+	}
 
+	public boolean checkAppliedBefore(String commandId) {
+		for (String cmdId : this.recentAppliedCmd) {
+			if (cmdId.equals(commandId)) {
+				return true;// 之前已经提交过
+			}
+		}
+		if(this.recentAppliedCmd.size() >= 50) {
+			this.recentAppliedCmd.removeFirst();
+		}
+		this.recentAppliedCmd.add(commandId);
+		return false;// 之前没有提交过
 	}
 }

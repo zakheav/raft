@@ -58,12 +58,14 @@ public class ApplyLogThread implements Runnable {
 				int logIndex = Node.getInstance().server.log
 						.get_logByIndex(Node.getInstance().server.log.appliedIndex).index;
 
-				String queryString = "insert into log(logIndex, term, command, commandId) values(" + logIndex + ","
-						+ term + ",'" + command + "','" + commandId + "')";
-				DBpool.getInstance().executeUpdate(queryString);
-
-				// 提交appliedIndex指向的log（需要查看是否重复提交）
-				System.out.println("apply: " + command);
+				// 如果这条消息没有提交过（防止重复提交）
+				if (!Node.getInstance().server.log.checkAppliedBefore(commandId)) {
+					String queryString = "insert into log(logIndex, term, command, commandId) values(" + logIndex + ","
+							+ term + ",'" + command + "','" + commandId + "')";
+					DBpool.getInstance().executeUpdate(queryString);
+					// 提交appliedIndex指向的log
+					System.out.println("apply: " + command);
+				}
 
 				if (Node.getInstance().server.status == 2) {
 					// 把提交后结果根据logEntry中的CommandId找到对应的clientSocket返回

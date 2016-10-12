@@ -26,7 +26,7 @@ public class DBpool {
 	private int maxPoolSize = 15;
 	private int nowTotalConnections = 10;
 
-	private static DBpool instance = new DBpool("log2");
+	private static DBpool instance = new DBpool("log0");
 
 	private Queue<Connection> pool = new LinkedList<Connection>();
 	private Vector<Connection> connectionsInUse = new Vector<Connection>(commonPoolSize);

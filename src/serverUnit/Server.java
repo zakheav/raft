@@ -4,16 +4,19 @@ public class Server {
 	public Server(int nodeNum) {
 		
 		this.status = 0;
-		this.currentTerm = 1;
 		this.grantNum = 1;
 		this.log = new Log();
-
+		this.currentTerm = this.log.get_lastLogTerm();
+		
 		this.nextIndex = new int[nodeNum];
 		this.matchIndex = new int[nodeNum];
 		for (int i = 0; i < nodeNum; ++i) {
 			nextIndex[i] = 1;
 			matchIndex[i] = 0;
 		}
+		
+		// 启动log清理线程
+		new Thread(new LogReleaseThread()).start();
 	}
 
 	public int status;

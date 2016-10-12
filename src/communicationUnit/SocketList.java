@@ -28,18 +28,6 @@ public class SocketList {
 	private Map<String, ConcurrentSocket> welcomeSocketMap;// 远端ip:port-socket对（被动接入的socket）
 	private Map<String, ConcurrentSocket> clientSocketMap;// client指令id-socket对
 
-	public synchronized void informClientClientClose() {// 通知所有的client关闭socket
-		for (String key : clientSocketMap.keySet()) {
-			ConcurrentSocket socket = clientSocketMap.get(key);
-			List<Object> msg7 = new ArrayList<Object>();
-			msg7.add(7);
-			msg7.add(false);
-			String massage7 = JSON.ArrayToJSON(msg7);
-			SendTask task = new SendTask(socket, massage7);
-			ThreadPool.getInstance().addTasks(task);// 回复客户端，找错了
-		}
-	}
-
 	public synchronized ConcurrentSocket querySocket(String key) {// 根据key获取socket
 		if (helloSocketMap.get(key) != null)
 			return helloSocketMap.get(key);
@@ -143,6 +131,18 @@ public class SocketList {
 					System.out.println("重启socket失败，远端host： " + ip + ":" + port);
 				}
 			}
+		}
+	}
+	
+	public synchronized void informClientClientClose() {// 通知所有的client关闭socket
+		for (String key : clientSocketMap.keySet()) {
+			ConcurrentSocket socket = clientSocketMap.get(key);
+			List<Object> msg7 = new ArrayList<Object>();
+			msg7.add(7);
+			msg7.add(false);
+			String massage7 = JSON.ArrayToJSON(msg7);
+			SendTask task = new SendTask(socket, massage7);
+			ThreadPool.getInstance().addTasks(task);// 回复客户端，找错了
 		}
 	}
 }

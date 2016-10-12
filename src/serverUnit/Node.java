@@ -22,7 +22,7 @@ public class Node {
 			String ipport = ip + ":" + port;
 			this.nodeAddrList.add(ipport);
 		}
-		this.nodeId = 2;
+		this.nodeId = 0;
 		this.server = new Server(nodeAddrListSize);
 	}
 
