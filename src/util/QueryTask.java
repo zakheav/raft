@@ -3,7 +3,6 @@ package util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import communicationUnit.ConcurrentSocket;
 import communicationUnit.SendTask;
 import communicationUnit.SocketList;
@@ -22,7 +21,7 @@ public class QueryTask implements Runnable {
 	@Override
 	public void run() {
 		List<Map<String, Object>> resultMap = DBpool.getInstance().executeQuery(command);// ²éÑ¯Êý¾Ý
-		String result = resultMap.toString();
+		String result = JSON.ListToJSON(resultMap);
 		ConcurrentSocket socket = SocketList.getInstance().querySocket(commandId);
 		if (socket != null) {
 

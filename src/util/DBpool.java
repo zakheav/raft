@@ -26,15 +26,18 @@ public class DBpool {
 	private int maxPoolSize = 15;
 	private int nowTotalConnections = 10;
 
-	private static DBpool instance = new DBpool("log0");
+	private static DBpool instance = new DBpool();
 
 	private Queue<Connection> pool = new LinkedList<Connection>();
 	private Vector<Connection> connectionsInUse = new Vector<Connection>(commonPoolSize);
 
-	private DBpool(String dbName) {
-		DBpool.url = "jdbc:mysql://localhost:3306/"+dbName;
-		DBpool.user = "root";
-		DBpool.password = "";
+	private DBpool() {
+		
+		Map<String, String> conf = new XML().mysqlConf();
+		DBpool.url = conf.get("url");
+		DBpool.user = conf.get("user");
+		DBpool.password = conf.get("password");
+
 		try {
 			Class.forName(DBpool.driverClassName);
 		} catch (ClassNotFoundException e) {

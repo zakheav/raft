@@ -2,27 +2,31 @@ package serverUnit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import communicationUnit.ThreadPool;
 import connectionMaintenanceUnit.HelloThread;
 import connectionMaintenanceUnit.WelcomeThread;
 import raftProcedureUnit.ApplyLogThread;
 import raftProcedureUnit.MassageProcessThread;
 import timerUnit.TimerThread;
+import util.DBpool;
+import util.XML;
 
 public class Node {
 	// 单例
 	private static Node instance = new Node();
 
+	@SuppressWarnings("unchecked")
 	private Node() {
-		this.nodeAddrListSize = 3;
+		Map<String, Object> conf = new XML().nodeConf();
+
+		this.nodeAddrListSize = ((List<String>) (conf.get("ipport"))).size();
 		this.nodeAddrList = new ArrayList<String>();
-		for (int i = 0; i < nodeAddrListSize; ++i) {
-			String ip = "127.0.0.1";
-			int port = 8080 + i;
-			String ipport = ip + ":" + port;
+		for (String ipport : (List<String>) (conf.get("ipport"))) {
 			this.nodeAddrList.add(ipport);
 		}
-		this.nodeId = 0;
+		this.nodeId = Integer.parseInt((String) conf.get("nodeId"));
 		this.server = new Server(nodeAddrListSize);
 	}
 
@@ -36,6 +40,8 @@ public class Node {
 	public Server server;
 
 	public void start() {
+		DBpool.getInstance();// 启动连接池
+		ThreadPool.getInstance();// 启动线程池
 		new Thread(new HelloThread()).start();
 		new Thread(new WelcomeThread()).start();
 		new Thread(TimerThread.getInstance()).start();
@@ -58,7 +64,7 @@ public class Node {
 	public String get_address(int idx) {
 		return nodeAddrList.get(idx);
 	}
-	
+
 	public static void main(String[] args) {
 		Node.getInstance().start();
 	}

@@ -344,7 +344,7 @@ public class MassageProcessThread implements Runnable {
 							int prevLogTerm = Node.getInstance().server.log.get_logByIndex(prevLogIndex).term;
 							int leaderCommit = Node.getInstance().server.log.commitIndex;
 
-							int endIndex = myLastLogIndex - nextIndex > 5 ? nextIndex + 5 : myLastLogIndex;
+							int endIndex = myLastLogIndex - nextIndex > 50 ? nextIndex + 50 : myLastLogIndex;
 							int entriesNum = endIndex - nextIndex + 1 > 0 ? endIndex - nextIndex + 1 : 0;
 							msg2.add(2);
 							msg2.add(myTerm);
