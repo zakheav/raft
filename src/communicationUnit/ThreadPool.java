@@ -2,30 +2,39 @@ package communicationUnit;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+
+import util.XML;
 
 public class ThreadPool {
 	// 单例
 	private static ThreadPool instance = new ThreadPool();
 
+	@SuppressWarnings("unchecked")
 	private ThreadPool() {
+		Map<String, Object> conf = new XML().nodeConf();
+		int nodeNum = ((List<String>) (conf.get("ipport"))).size();
+		this.COMMONSIZE = nodeNum * 2;
+		this.MAXSIZE = this.COMMONSIZE + 10;
 		pool = new ArrayList<Thread>();
 		tasks = new LinkedList<Runnable>();
 		for (int i = 0; i < COMMONSIZE; ++i) {
-			addLabour(new Worker());
+			add_labour(new Worker());
 		}
 		System.out.println("线程池启动");
 	}
 
-	public static ThreadPool getInstance() {
+	public static ThreadPool get_instance() {
 		return instance;
 	}// 单例
 
-	private int COMMONSIZE = 20;
-	private int MAXSIZE = 40;// 线程数量应大于节点数量
-	private int TASK_CRITICAL_SIZE = 100;
-	private ArrayList<Thread> pool;
-	private Queue<Runnable> tasks;
+	private final int COMMONSIZE;
+	private final int MAXSIZE;// 线程数量应大于节点数量
+	private final int TASK_CRITICAL_SIZE = 100;
+	private final ArrayList<Thread> pool;
+	private final Queue<Runnable> tasks;
 
 	class Worker extends Thread {
 		public void run() {
@@ -62,11 +71,11 @@ public class ThreadPool {
 					break;
 				}
 			}
-			removeLabour(this);
+			remove_labour(this);
 		}
 	}
 
-	public void addLabour(Thread t) {
+	public void add_labour(Thread t) {
 		synchronized (this.pool) {
 			if (pool.size() < MAXSIZE) {
 				pool.add(t);
@@ -75,7 +84,7 @@ public class ThreadPool {
 		}
 	}
 
-	public void removeLabour(Thread t) {
+	public void remove_labour(Thread t) {
 		synchronized (this.pool) {
 			if (!pool.isEmpty()) {
 				pool.remove(t);
@@ -83,11 +92,11 @@ public class ThreadPool {
 		}
 	}
 
-	public void addTasks(Runnable task) {
+	public void add_tasks(Runnable task) {
 		synchronized (tasks) {
 			tasks.offer(task);
 			if (tasks.size() >= this.TASK_CRITICAL_SIZE) {
-				addLabour(new CasualLaborer());
+				add_labour(new CasualLaborer());
 			}
 			tasks.notify();
 		}

@@ -46,7 +46,7 @@ public class Log {
 		}
 	}
 
-	public synchronized int get_lastLogIndex() {
+	public synchronized int get_lastLogIndex() {// 可能会访问持久化存储
 		if (indexCacheDirty) {
 			if (log.isEmpty()) {
 				String queryString = "select max(logIndex) as lastLogIndex from log";
@@ -61,7 +61,7 @@ public class Log {
 		return lastLogIndexCache;
 	}
 
-	public synchronized int get_lastLogTerm() {
+	public synchronized int get_lastLogTerm() {// 可能会访问持久化存储
 		if (termCacheDirty) {
 			if (log.isEmpty()) {
 				String queryString = "select term from log where logIndex = " + get_lastLogIndex();
@@ -76,7 +76,7 @@ public class Log {
 		return lastLogTermCache;
 	}
 
-	public synchronized LogEntry get_logByIndex(int index) {
+	public synchronized LogEntry get_logByIndex(int index) {// 可能会访问持久化存储
 		if (index == 0) {
 			return new LogEntry(0, null, null, 0);
 		}

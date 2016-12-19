@@ -9,7 +9,7 @@ public class LogReleaseThread implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		Node.getInstance().server.log.logClear();
+		Node.get_instance().server.log.logClear();
 	}
 
 }

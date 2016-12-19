@@ -7,10 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import serverUnit.Node;
 import util.JSON;
 
 public class SocketList {
+	private Logger log = Logger.getLogger(SocketList.class);
 	// 单例
 	private static SocketList instance = new SocketList();
 
@@ -20,13 +23,13 @@ public class SocketList {
 		this.clientSocketMap = new HashMap<String, ConcurrentSocket>();
 	}
 
-	public static SocketList getInstance() {
+	public static SocketList get_instance() {
 		return instance;
 	}
 
-	private Map<String, ConcurrentSocket> helloSocketMap;// 远端ip:port-socket对（主动连接的socket）
-	private Map<String, ConcurrentSocket> welcomeSocketMap;// 远端ip:port-socket对（被动接入的socket）
-	private Map<String, ConcurrentSocket> clientSocketMap;// client指令id-socket对
+	private final Map<String, ConcurrentSocket> helloSocketMap;// 远端ip:port-socket对（主动连接的socket）
+	private final Map<String, ConcurrentSocket> welcomeSocketMap;// 远端ip:port-socket对（被动接入的socket）
+	private final Map<String, ConcurrentSocket> clientSocketMap;// client指令id-socket对
 
 	public synchronized ConcurrentSocket querySocket(String key) {// 根据key获取socket
 		if (helloSocketMap.get(key) != null)
@@ -91,14 +94,14 @@ public class SocketList {
 			ConcurrentSocket socket = helloSocketMap.get(ipport);
 			if (socket != null) {
 				SendTask task = new SendTask(socket, msg);
-				ThreadPool.getInstance().addTasks(task);
+				ThreadPool.get_instance().add_tasks(task);
 			}
 		}
 		for (String ipport : welcomeSocketMap.keySet()) {
 			ConcurrentSocket socket = welcomeSocketMap.get(ipport);
 			if (socket != null) {
 				SendTask task = new SendTask(socket, msg);
-				ThreadPool.getInstance().addTasks(task);
+				ThreadPool.get_instance().add_tasks(task);
 			}
 		}
 	}
@@ -117,18 +120,18 @@ public class SocketList {
 					// 获取自己的ipport, 构建：传输服务器地址消息
 					List<Object> msg5 = new ArrayList<Object>();
 					int type = 5;
-					String myIpport = Node.getInstance().get_myAddress();
+					String myIpport = Node.get_instance().get_myAddress();
 					msg5.add(type);
 					msg5.add(myIpport);
 					String massage = JSON.ArrayToJSON(msg5);
 					SendTask sendTask = new SendTask(cs, massage);
-					ThreadPool.getInstance().addTasks(sendTask);// 向远端服务器发送自己的地址
+					ThreadPool.get_instance().add_tasks(sendTask);// 向远端服务器发送自己的地址
 
 					// 把cs打包加入到线程池中
 					RecvTask recvTask = new RecvTask(cs);
-					ThreadPool.getInstance().addTasks(recvTask);
+					ThreadPool.get_instance().add_tasks(recvTask);
 				} catch (IOException e) {
-					System.out.println("重启socket失败，远端host： " + ip + ":" + port);
+					log.info("重启socket失败，远端host： " + ip + ":" + port);
 				}
 			}
 		}
@@ -142,7 +145,7 @@ public class SocketList {
 			msg7.add(false);
 			String massage7 = JSON.ArrayToJSON(msg7);
 			SendTask task = new SendTask(socket, massage7);
-			ThreadPool.getInstance().addTasks(task);// 回复客户端，找错了
+			ThreadPool.get_instance().add_tasks(task);// 回复客户端，找错了
 		}
 	}
 }

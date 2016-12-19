@@ -8,8 +8,8 @@ public class LogEntry {
 		this.index = index;
 	}
 	
-	public int term;
-	public String command;
-	public String commandId;
-	public int index;
+	public final int term;
+	public final String command;
+	public final String commandId;
+	public final int index;
 }

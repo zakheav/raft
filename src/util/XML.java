@@ -53,4 +53,17 @@ public class XML {
 			return null;
 		}
 	}
+	
+	public String get_applyMethod() {
+		SAXReader reader = new SAXReader();
+		try {
+			Document document = reader.read(new File("conf/conf.xml"));
+			Element root = document.getRootElement();
+			Element applyMethod = root.element("applyMethod");
+			return applyMethod.getText();
+		} catch(DocumentException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

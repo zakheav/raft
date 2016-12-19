@@ -9,7 +9,7 @@ public class MassageQueue {
 	private MassageQueue() {
 		this.queue = new LinkedList<Massage>();
 	}
-	public static MassageQueue getInstance() {
+	public static MassageQueue get_instance() {
 		return instance;
 	}// µ¥Àý
 	

@@ -22,7 +22,7 @@ public class QueryTask implements Runnable {
 	public void run() {
 		List<Map<String, Object>> resultMap = DBpool.getInstance().executeQuery(command);// ²éÑ¯Êý¾Ý
 		String result = JSON.ListToJSON(resultMap);
-		ConcurrentSocket socket = SocketList.getInstance().querySocket(commandId);
+		ConcurrentSocket socket = SocketList.get_instance().querySocket(commandId);
 		if (socket != null) {
 
 			List<Object> msg9 = new ArrayList<Object>();
@@ -31,7 +31,7 @@ public class QueryTask implements Runnable {
 
 			String massage9 = JSON.ArrayToJSON(msg9);
 			SendTask task = new SendTask(socket, massage9);
-			ThreadPool.getInstance().addTasks(task);
+			ThreadPool.get_instance().add_tasks(task);
 		}
 	}
 

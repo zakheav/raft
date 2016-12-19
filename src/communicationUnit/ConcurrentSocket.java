@@ -5,9 +5,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import org.apache.log4j.Logger;
+
 public class ConcurrentSocket {
 	public Socket socket;
-
+	private Logger log = Logger.getLogger(ConcurrentSocket.class);
 	public ConcurrentSocket(Socket socket) {
 		this.socket = socket;
 	}
@@ -16,10 +18,10 @@ public class ConcurrentSocket {
 		byte[] msg = massage.getBytes();
 		try {
 			OutputStream output = socket.getOutputStream();
-			output.write(msg);// 阻塞
+			output.write(msg);
 			output.flush();
 		} catch (IOException e) {
-			System.out.println("socket error");
+			log.error("socket error");
 			throw e;
 		}
 	}
@@ -27,20 +29,20 @@ public class ConcurrentSocket {
 	public String read() throws IOException {
 		byte[] buffer = new byte[1024*10];
 		InputStream input = socket.getInputStream();
-		int length =  input.read(buffer);// 阻塞
+		int length =  input.read(buffer);
 		
 		StringBuffer massageBuffer = new StringBuffer(1024 * 10);
 		for (int i = 0; i < length; ++i) {
 			massageBuffer.append((char) buffer[i]);
 		}
-		return massageBuffer.toString();// 得到消息
+		return massageBuffer.toString();
 	}
 
 	public void close() {
 		try {
 			this.socket.close();
 		} catch (IOException e) {
-			System.out.println("socket已经关闭");
+			System.out.println("socket error");
 		}
 	}
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.PropertyConfigurator;
+
 import communicationUnit.ThreadPool;
 import connectionMaintenanceUnit.HelloThread;
 import connectionMaintenanceUnit.WelcomeThread;
@@ -30,21 +32,22 @@ public class Node {
 		this.server = new Server(nodeAddrListSize);
 	}
 
-	public static Node getInstance() {
+	public static Node get_instance() {
 		return instance;
 	}// 单例
 
-	public int nodeAddrListSize;
-	public List<String> nodeAddrList;
-	public int nodeId;
-	public Server server;
+	public final int nodeAddrListSize;
+	public final List<String> nodeAddrList;
+	public final int nodeId;
+	public final Server server;
 
 	public void start() {
+		PropertyConfigurator.configure("conf/log4j.properties");
 		DBpool.getInstance();// 启动连接池
-		ThreadPool.getInstance();// 启动线程池
+		ThreadPool.get_instance();// 启动线程池
 		new Thread(new HelloThread()).start();
 		new Thread(new WelcomeThread()).start();
-		new Thread(TimerThread.getInstance()).start();
+		new Thread(TimerThread.get_instance()).start();
 		new Thread(new MassageProcessThread()).start();
 		new Thread(new ApplyLogThread()).start();
 	}
@@ -63,9 +66,5 @@ public class Node {
 
 	public String get_address(int idx) {
 		return nodeAddrList.get(idx);
-	}
-
-	public static void main(String[] args) {
-		Node.getInstance().start();
 	}
 }

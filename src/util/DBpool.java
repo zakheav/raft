@@ -16,9 +16,9 @@ import java.util.Vector;
 
 public class DBpool {
 
-	private static String url = "";
-	private static String user = "";
-	private static String password = "";
+	private final String url;
+	private final String user;
+	private final String password;
 
 	private static String driverClassName = "com.mysql.jdbc.Driver";
 
@@ -34,17 +34,16 @@ public class DBpool {
 	private DBpool() {
 		
 		Map<String, String> conf = new XML().mysqlConf();
-		DBpool.url = conf.get("url");
-		DBpool.user = conf.get("user");
-		DBpool.password = conf.get("password");
+		this.url = conf.get("url");
+		this.user = conf.get("user");
+		this.password = conf.get("password");
 
 		try {
 			Class.forName(DBpool.driverClassName);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		addConnection(commonPoolSize);
+		add_connection(commonPoolSize);
 		System.out.println("Á¬½Ó³ØÆô¶¯");
 	}
 
@@ -92,7 +91,7 @@ public class DBpool {
 
 	private Connection newConnection() {
 		try {
-			Connection conn = DriverManager.getConnection(DBpool.url, DBpool.user, DBpool.password);
+			Connection conn = DriverManager.getConnection(this.url, this.user, this.password);
 			return conn;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -100,7 +99,7 @@ public class DBpool {
 		}
 	}
 
-	private void addConnection(int num) {
+	private void add_connection(int num) {
 		synchronized (pool) {
 			for (int i = 0; i < num; ++i) {
 				try {
@@ -115,7 +114,7 @@ public class DBpool {
 		}
 	}
 
-	public Connection getConnection() {
+	public Connection get_connection() {
 		synchronized (pool) {
 			while (pool.isEmpty() && (nowTotalConnections == maxPoolSize)) {
 				try {
@@ -139,7 +138,7 @@ public class DBpool {
 		}
 	}
 
-	public void releaseConnection(Connection cn) {
+	public void release_connection(Connection cn) {
 		if (connectionsInUse.remove(cn)) {
 			if (connectionsInUse.size() < commonPoolSize / 2 && nowTotalConnections > commonPoolSize) {
 				try {
@@ -167,7 +166,7 @@ public class DBpool {
 		boolean connection_timeout = false;
 		List<Map<String, Object>> result = null;
 		try {
-			conn = getConnection();
+			conn = get_connection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(queryString);
 			result = resultSet_to_obj(rs);
@@ -190,7 +189,7 @@ public class DBpool {
 				try {
 					e_rs.close();
 					e_stmt.close();
-					releaseConnection(e_conn);
+					release_connection(e_conn);
 				} catch (SQLException e3) {
 					e3.printStackTrace();
 				}
@@ -200,7 +199,7 @@ public class DBpool {
 				if( !connection_timeout ){
 					rs.close();
 					stmt.close();
-					releaseConnection(conn);
+					release_connection(conn);
 				} else{
 					stmt.close();
 					conn.close();
@@ -218,7 +217,7 @@ public class DBpool {
 		Statement e_stmt = null;
 		boolean connection_timeout = false;
 		try {
-			conn = getConnection();
+			conn = get_connection();
 			stmt = conn.createStatement();
 			stmt.executeUpdate(queryString);
 			return true;
@@ -237,7 +236,7 @@ public class DBpool {
 			} finally {
 				try {
 					e_stmt.close();
-					releaseConnection(e_conn);
+					release_connection(e_conn);
 				} catch (SQLException e3) {
 					e3.printStackTrace();
 				}
@@ -246,7 +245,7 @@ public class DBpool {
 			try {
 				if(!connection_timeout){
 					stmt.close();
-					releaseConnection(conn);
+					release_connection(conn);
 				} else{
 					stmt.close();
 					conn.close();

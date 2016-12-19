@@ -11,12 +11,12 @@ public class TimerThread implements Runnable {
 	private static TimerThread instance = new TimerThread();
 
 	private TimerThread() {
-		this.timer = (int) (Math.random() * 100) + 15;
+		this.timer = (int) (Math.random() * 50) + 15;
 		this.timerCopy = timer;
 		this.leaderTimerCopy = (int) (Math.random() * 10) + 5;
 	}
 
-	public static TimerThread getInstance() {
+	public static TimerThread get_instance() {
 		return instance;
 	}// µ¥Àý
 
@@ -53,7 +53,7 @@ public class TimerThread implements Runnable {
 				int type = 4;
 				msg4.add(type);
 				Massage massage = new Massage(null, JSON.ArrayToJSON(msg4));
-				MassageQueue.getInstance().add_massage(massage);
+				MassageQueue.get_instance().add_massage(massage);
 			} else {
 				--timer;
 			}

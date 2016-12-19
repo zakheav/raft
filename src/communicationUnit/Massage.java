@@ -6,6 +6,6 @@ public class Massage {
 		this.massage = massage;
 	}
 
-	public ConcurrentSocket socket;
-	public String massage;
+	public final ConcurrentSocket socket;
+	public final String massage;
 }

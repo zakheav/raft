@@ -3,8 +3,8 @@ package communicationUnit;
 import java.io.IOException;
 
 public class SendTask implements Runnable{
-	private ConcurrentSocket socket;
-	private String massage;
+	private final ConcurrentSocket socket;
+	private final String massage;
 	public SendTask(ConcurrentSocket socket, String massage) {
 		this.socket = socket;
 		this.massage = massage;
@@ -14,7 +14,7 @@ public class SendTask implements Runnable{
 		try {
 			socket.write(massage);
 		} catch (IOException e) {
-			SocketList.getInstance().remove_socket(socket);
+			SocketList.get_instance().remove_socket(socket);
 		}
 	}
 }
