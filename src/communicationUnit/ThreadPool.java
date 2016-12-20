@@ -9,7 +9,6 @@ import java.util.Queue;
 import util.XML;
 
 public class ThreadPool {
-	// 单例
 	private static ThreadPool instance = new ThreadPool();
 
 	@SuppressWarnings("unchecked")
@@ -23,15 +22,15 @@ public class ThreadPool {
 		for (int i = 0; i < COMMONSIZE; ++i) {
 			add_labour(new Worker());
 		}
-		System.out.println("线程池启动");
+		System.out.println("thread pool start");
 	}
 
 	public static ThreadPool get_instance() {
 		return instance;
-	}// 单例
+	}
 
 	private final int COMMONSIZE;
-	private final int MAXSIZE;// 线程数量应大于节点数量
+	private final int MAXSIZE;
 	private final int TASK_CRITICAL_SIZE = 100;
 	private final ArrayList<Thread> pool;
 	private final Queue<Runnable> tasks;
@@ -45,7 +44,6 @@ public class ThreadPool {
 						try {
 							tasks.wait();
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

@@ -15,7 +15,6 @@ public class Server {
 			matchIndex[i] = 0;
 		}
 		
-		// 启动log清理线程
 		new Thread(new LogReleaseThread()).start();
 	}
 

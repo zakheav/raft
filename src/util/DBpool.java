@@ -44,10 +44,10 @@ public class DBpool {
 			e.printStackTrace();
 		}
 		add_connection(commonPoolSize);
-		System.out.println("Á¬½Ó³ØÆô¶¯");
+		System.out.println("DB pool start");
 	}
 
-	public static DBpool getInstance() {
+	public static DBpool get_instance() {
 		return instance;
 	}
 

@@ -34,7 +34,7 @@ public class Node {
 
 	public static Node get_instance() {
 		return instance;
-	}// 单例
+	}// singleton
 
 	public final int nodeAddrListSize;
 	public final List<String> nodeAddrList;
@@ -43,8 +43,8 @@ public class Node {
 
 	public void start() {
 		PropertyConfigurator.configure("conf/log4j.properties");
-		DBpool.getInstance();// 启动连接池
-		ThreadPool.get_instance();// 启动线程池
+		DBpool.get_instance();// start DB pool
+		ThreadPool.get_instance();// start thread pool
 		new Thread(new HelloThread()).start();
 		new Thread(new WelcomeThread()).start();
 		new Thread(TimerThread.get_instance()).start();

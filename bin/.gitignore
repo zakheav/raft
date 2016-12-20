@@ -1,6 +1,3 @@
-/serverUnit/
-/communicationUnit/
-/connectionMaintenanceUnit/
+/myRaft/
 /raftProcedureUnit/
 /util/
-/timerUnit/

@@ -13,15 +13,15 @@ public class RecvTask implements Runnable {
 	public void run() {
 		try {
 			while (true) {
-				String msg = socket.read();// 得到消息
+				String msg = socket.read();// get the massage
 
-				if (!msg.isEmpty()) {// 消息非空
+				if (!msg.isEmpty()) {
 					Massage massage = new Massage(this.socket, msg);
-					MassageQueue.get_instance().add_massage(massage);// 加入到消息队列
-				} else {// 是client端的socket关闭信息
-					System.out.println("客户端连接断开");
-					this.socket.close();// 删除掉半开连接
-					break;// 跳出循环，线程结束这个task
+					MassageQueue.get_instance().add_massage(massage);// put the massage into the massage queue
+				} else {// it`s the client close signal
+					System.out.println("client connection has been closed.");
+					this.socket.close();// close the "half-open" connection
+					break;// finish this task
 				}
 			}
 		} catch (IOException e) {

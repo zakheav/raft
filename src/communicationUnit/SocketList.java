@@ -27,11 +27,11 @@ public class SocketList {
 		return instance;
 	}
 
-	private final Map<String, ConcurrentSocket> helloSocketMap;// 远端ip:port-socket对（主动连接的socket）
-	private final Map<String, ConcurrentSocket> welcomeSocketMap;// 远端ip:port-socket对（被动接入的socket）
-	private final Map<String, ConcurrentSocket> clientSocketMap;// client指令id-socket对
+	private final Map<String, ConcurrentSocket> helloSocketMap;// remote ip:port-socket pair (initiative connect socket)
+	private final Map<String, ConcurrentSocket> welcomeSocketMap;// remote ip:port-socket pair (passive connect socket)
+	private final Map<String, ConcurrentSocket> clientSocketMap;// client_cmd_id-socket pair
 
-	public synchronized ConcurrentSocket querySocket(String key) {// 根据key获取socket
+	public synchronized ConcurrentSocket querySocket(String key) {// get socket by address
 		if (helloSocketMap.get(key) != null)
 			return helloSocketMap.get(key);
 		if (welcomeSocketMap.get(key) != null)
@@ -39,7 +39,7 @@ public class SocketList {
 		return clientSocketMap.get(key);
 	}
 
-	public synchronized String queryAddr(ConcurrentSocket socket) {// 根据socket寻找远端服务器地址
+	public synchronized String queryAddr(ConcurrentSocket socket) {// get address by socket
 		for (String ipport : helloSocketMap.keySet()) {
 			if (helloSocketMap.get(ipport).equals(socket)) {
 				return ipport;
@@ -81,15 +81,15 @@ public class SocketList {
 		}
 	}
 
-	public synchronized void move_welcomeSocket(ConcurrentSocket socket, String ipport) {// 把welcomeSocket加入welcomeSocketMap中
+	public synchronized void move_welcomeSocket(ConcurrentSocket socket, String ipport) {// put welcomeSocket into welcomeSocketMap
 		welcomeSocketMap.put(ipport, socket);
 	}
 
-	public synchronized void move_clientSocket(ConcurrentSocket socket, String cmdId) {// 把clientSocket加入到clientSocketMap中
+	public synchronized void move_clientSocket(ConcurrentSocket socket, String cmdId) {// put clientSocket into clientSocketMap
 		clientSocketMap.put(cmdId, socket);
 	}
 
-	public synchronized void broadcast(String msg) {// 广播消息
+	public synchronized void broadcast(String msg) {// broadcast massage in cluster
 		for (String ipport : helloSocketMap.keySet()) {
 			ConcurrentSocket socket = helloSocketMap.get(ipport);
 			if (socket != null) {
@@ -113,31 +113,30 @@ public class SocketList {
 				int port = Integer.parseInt(ipport.split(":")[1]);
 
 				try {
-					Socket socket = new Socket(ip, port);// 尝试连接远端
+					Socket socket = new Socket(ip, port);// try connect to remote node
 					ConcurrentSocket cs = new ConcurrentSocket(socket);
 					add_helloSocket(cs, ipport);
 
-					// 获取自己的ipport, 构建：传输服务器地址消息
 					List<Object> msg5 = new ArrayList<Object>();
 					int type = 5;
-					String myIpport = Node.get_instance().get_myAddress();
+					String myIpport = Node.get_instance().get_myAddress();// get own ip:port
 					msg5.add(type);
 					msg5.add(myIpport);
 					String massage = JSON.ArrayToJSON(msg5);
 					SendTask sendTask = new SendTask(cs, massage);
-					ThreadPool.get_instance().add_tasks(sendTask);// 向远端服务器发送自己的地址
+					ThreadPool.get_instance().add_tasks(sendTask);// send own ip:port to remote node
 
-					// 把cs打包加入到线程池中
+					// build a thread to wait for response
 					RecvTask recvTask = new RecvTask(cs);
 					ThreadPool.get_instance().add_tasks(recvTask);
 				} catch (IOException e) {
-					log.info("重启socket失败，远端host： " + ip + ":" + port);
+					log.info("reborn socket fail，remote host： " + ip + ":" + port);
 				}
 			}
 		}
 	}
 	
-	public synchronized void informClientClientClose() {// 通知所有的client关闭socket
+	public synchronized void informClientClientClose() {// inform all client close socket
 		for (String key : clientSocketMap.keySet()) {
 			ConcurrentSocket socket = clientSocketMap.get(key);
 			List<Object> msg7 = new ArrayList<Object>();
@@ -145,7 +144,7 @@ public class SocketList {
 			msg7.add(false);
 			String massage7 = JSON.ArrayToJSON(msg7);
 			SendTask task = new SendTask(socket, massage7);
-			ThreadPool.get_instance().add_tasks(task);// 回复客户端，找错了
+			ThreadPool.get_instance().add_tasks(task);// reply client: you find a wrong server
 		}
 	}
 }

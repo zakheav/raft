@@ -24,27 +24,26 @@ public class HelloThread implements Runnable {
 			String ip = ip_port[0];
 			int port = Integer.parseInt(ip_port[1]);
 			try {
-				Socket socket = new Socket(ip, port);// 成功连接远端服务器
+				Socket socket = new Socket(ip, port);// connect remote node successfully
 				ConcurrentSocket cs = new ConcurrentSocket(socket);
-				SocketList.get_instance().add_helloSocket(cs, addr);// 将socket加入到SocketList中去
+				SocketList.get_instance().add_helloSocket(cs, addr);// put the socket into the socketList
 				
-				// 获取自己的ipport, 构建：传输服务器地址消息
 				List<Object> msg5 = new ArrayList<Object>();
 				int type = 5;
 				String myIpport = Node.get_instance().get_myAddress();
 				msg5.add(type);
 				msg5.add(myIpport);
-				String massage = JSON.ArrayToJSON(msg5);
+				String massage = JSON.ArrayToJSON(msg5);// get own ip:port
 				SendTask sendTask = new SendTask(cs, massage);
-				ThreadPool.get_instance().add_tasks(sendTask);// 向远端服务器发送自己的地址
+				ThreadPool.get_instance().add_tasks(sendTask);// send own ip:port to remote node
 				
-				// 把cs打包加入到线程池中
+				// build a thread to wait for response
 				RecvTask recvTask = new RecvTask(cs);
 				ThreadPool.get_instance().add_tasks(recvTask);
 				
-				log.info("socket连接远端成功，address:" + addr);
+				log.info("socket connect remote node success, address:" + addr);
 			} catch (IOException e) {
-				log.info("无法连接上节点，地址为：" + addr);
+				log.info("can`t connect to the remote node, address:" + addr);
 				SocketList.get_instance().add_helloSocket(null, addr);
 			}
 		}

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <recipe>
-	<nodeId>0</nodeId><!-- 当前节点的编号 -->
+	<nodeId>2</nodeId><!-- the index of this node -->
 	<mysql>
-		<url>jdbc:mysql://127.0.0.1:3306/log0</url><!-- 当前节点的数据库地址 -->
+		<url>jdbc:mysql://127.0.0.1:3306/log2</url><!-- the database configure, this database is used to store the log -->
 		<user>root</user>
 		<password></password>
 	</mysql>
-	<nodeList><!-- 集群中所有的服务器的地址 -->
+	<nodeList><!-- nodes address -->
 		<ipport>127.0.0.1:8080</ipport>
 		<ipport>127.0.0.1:8081</ipport>
 		<ipport>127.0.0.1:8082</ipport>
 	</nodeList>
-	<applyMethod>myRaft.MyApplyMethod</applyMethod><!-- 提交数据库命令的类 -->
+	<applyMethod>myRaft.MyApplyMethod</applyMethod><!-- the class that use to submit database request -->
 </recipe>

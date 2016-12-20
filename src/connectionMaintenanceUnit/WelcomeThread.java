@@ -25,9 +25,9 @@ public class WelcomeThread implements Runnable {
 			@SuppressWarnings("resource")
 			ServerSocket serverSocket = new ServerSocket(port, 50, InetAddress.getByName(ip));
 			while (true) {
-				Socket socket = serverSocket.accept();// 接收主动接入的连接
+				Socket socket = serverSocket.accept();// receive remote socket
 				ConcurrentSocket cs = new ConcurrentSocket(socket);
-				// 打包成RecvTask，加入线程池
+				// build a thread and waiting for massage
 				RecvTask task = new RecvTask(cs);
 				ThreadPool.get_instance().add_tasks(task);
 			}

@@ -7,7 +7,7 @@ import communicationUnit.MassageQueue;
 import util.JSON;
 
 public class TimerThread implements Runnable {
-	// 单例
+	// singleton
 	private static TimerThread instance = new TimerThread();
 
 	private TimerThread() {
@@ -18,7 +18,7 @@ public class TimerThread implements Runnable {
 
 	public static TimerThread get_instance() {
 		return instance;
-	}// 单例
+	}// singleton
 
 	private int timer;
 	private int timerCopy;
@@ -26,7 +26,7 @@ public class TimerThread implements Runnable {
 
 	public void reset_timer() {
 		timer = timerCopy;
-		System.out.println("重置定时器，"+timer);
+		System.out.println("reset timer, "+timer);
 	}
 
 	public void set_timer() {
@@ -36,7 +36,7 @@ public class TimerThread implements Runnable {
 
 	public void reset_leaderTimer() {
 		this.timer = leaderTimerCopy;
-		System.out.println("重置leader定时器，"+timer);
+		System.out.println("reset leader timer, "+timer);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class TimerThread implements Runnable {
 				e.printStackTrace();
 			}
 			if (timer == 0) {
-				// 向MassageQueue中加入超时消息
+				// append timeout massage into MassageQueue
 				List<Object> msg4 = new ArrayList<Object>();
 				int type = 4;
 				msg4.add(type);

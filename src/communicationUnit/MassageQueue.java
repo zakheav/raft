@@ -4,14 +4,14 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class MassageQueue {
-	// 데절
+	// singleton
 	private static MassageQueue instance = new MassageQueue();
 	private MassageQueue() {
 		this.queue = new LinkedList<Massage>();
 	}
 	public static MassageQueue get_instance() {
 		return instance;
-	}// 데절
+	}// singleton
 	
 	private Queue<Massage> queue;
 	

@@ -1,0 +1,5 @@
+server 3个 client 1个
+
+client发送一个请求，同步到3个server  成功
+一个leader server 断开， 重新选举出新的leader，client发送一个请求，之后断开的leader server重启  成功
+一个follower server 断开，client发送一个请求，之后断开的follower server重启  成功
