@@ -15,21 +15,21 @@ Every time you query data through raft client you will get right data if there a
 
   override function **query(String command)**, this function is used to query the database
 
-    public class MyApplyMethod implements ApplyMethod {
-		@Override
-		public void apply(String command) {
-			// get connection
-			// submit command to database
-			System.out.println("applied: "+command);
+    	public class MyApplyMethod implements ApplyMethod {
+			@Override
+			public void apply(String command) {
+				// get connection
+				// submit command to database
+				System.out.println("applied: "+command);
+			}
+	
+			@Override
+			public List<Map<String, Object>> query(String command) {
+				// get connection
+				// through the conncetion get the query result
+				// return the result
+			}
 		}
-
-		@Override
-		public List<Map<String, Object>> query(String command) {
-			// get connection
-			// through the conncetion get the query result
-			// return the result
-		}
-	}
 
 - write the conf.xml in conf folder
 - start the raft component
