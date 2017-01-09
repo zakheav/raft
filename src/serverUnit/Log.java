@@ -122,6 +122,11 @@ public class Log {
 		log.add(logEntry);
 		indexCacheDirty = true;
 		termCacheDirty = true;
+		
+		if (this.recentAppliedCmd.size() >= 50) {
+			this.recentAppliedCmd.removeFirst();
+		}
+		this.recentAppliedCmd.add(commandId);
 	}
 
 	public synchronized void logClear() {// clean unnecessary log in memory
