@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 public class ConcurrentSocket {
 	public Socket socket;
 	private Logger log = Logger.getLogger(ConcurrentSocket.class);
+
 	public ConcurrentSocket(Socket socket) {
 		this.socket = socket;
 	}
@@ -26,18 +27,18 @@ public class ConcurrentSocket {
 		}
 	}
 
-	public String read() throws IOException {
-		byte[] buffer = new byte[1024*10];
+	public String read() throws IOException {// adhesive bag need to solve
+		byte[] buffer = new byte[1024 * 10];
 		InputStream input = socket.getInputStream();
-		int length =  input.read(buffer);
-		
+		int length = input.read(buffer);
+
 		StringBuffer massageBuffer = new StringBuffer(1024 * 10);
 		for (int i = 0; i < length; ++i) {
 			massageBuffer.append((char) buffer[i]);
 		}
 		return massageBuffer.toString();
 	}
-
+	
 	public void close() {
 		try {
 			this.socket.close();

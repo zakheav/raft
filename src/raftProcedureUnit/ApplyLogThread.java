@@ -38,7 +38,7 @@ public class ApplyLogThread implements Runnable {
 				int leaderIdx = Node.get_instance().nodeId;
 				int N = Node.get_instance().server.log.get_lastLogIndex();
 				boolean findN = false;
-				while (!findN) {// find a N£¬the N>CommitIndex and most of matchIndex>=N
+				while (!findN) {// find a N the N>CommitIndex and most of matchIndex>=N
 					int counter = 1;
 					for (int i = 0; i < NodeNum; ++i) {
 						if (i != leaderIdx) {
