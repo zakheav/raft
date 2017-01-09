@@ -53,7 +53,7 @@ public class ConcurrentSocket {
 		byte[] buffer = new byte[1024 * 10];
 		InputStream input = socket.getInputStream();
 		int length = input.read(buffer);
-
+		
 		for (int bufferIdx = 0; bufferIdx < length; ++bufferIdx) {
 			if (bagWriteIdx < 4) {// bag head is not complete, try to complete the bag head
 				bagCache[bagWriteIdx++] = buffer[bufferIdx];

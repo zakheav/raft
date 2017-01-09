@@ -21,11 +21,11 @@ public class MassageProcessThread implements Runnable {
 			Massage massage = MassageQueue.get_instance().get_massage();
 			System.out.println(massage.massage);
 			List<Object> msg = JSON.JSONToArray(massage.massage);
-
+			
 			int status = Node.get_instance().server.status;
 			int msgType = (int) msg.get(0);
 			ConcurrentSocket msgSocket = massage.socket;// get the socket that deliver the massage
-
+			
 			if (msgType == 5) {
 				String ipport = (String) msg.get(1);
 				SocketList.get_instance().move_welcomeSocket(msgSocket, ipport);

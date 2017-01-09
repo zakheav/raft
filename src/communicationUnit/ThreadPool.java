@@ -15,11 +15,10 @@ public class ThreadPool {
 	private ThreadPool() {
 		Map<String, Object> conf = new XML().nodeConf();
 		int nodeNum = ((List<String>) (conf.get("ipport"))).size();
-		this.COMMONSIZE = nodeNum * 2;
-		this.MAXSIZE = this.COMMONSIZE + 10;
+		this.POOLSIZE = nodeNum * 50;
 		pool = new ArrayList<Thread>();
 		tasks = new LinkedList<Runnable>();
-		for (int i = 0; i < COMMONSIZE; ++i) {
+		for (int i = 0; i < POOLSIZE; ++i) {
 			add_labour(new Worker());
 		}
 		System.out.println("thread pool start");
@@ -29,9 +28,7 @@ public class ThreadPool {
 		return instance;
 	}
 
-	private final int COMMONSIZE;
-	private final int MAXSIZE;
-	private final int TASK_CRITICAL_SIZE = 100;
+	private final int POOLSIZE;
 	private final ArrayList<Thread> pool;
 	private final Queue<Runnable> tasks;
 
@@ -54,38 +51,11 @@ public class ThreadPool {
 		}
 	}
 
-	class CasualLaborer extends Thread {
-		public void run() {
-			while (true) {
-				Runnable task = null;
-				synchronized (tasks) {
-					if (!tasks.isEmpty()) {
-						task = tasks.poll();
-					}
-				}
-				if (task != null) {
-					task.run();
-				} else {
-					break;
-				}
-			}
-			remove_labour(this);
-		}
-	}
-
 	public void add_labour(Thread t) {
 		synchronized (this.pool) {
-			if (pool.size() < MAXSIZE) {
+			if (pool.size() < POOLSIZE) {
 				pool.add(t);
 				pool.get(pool.size() - 1).start();
-			}
-		}
-	}
-
-	public void remove_labour(Thread t) {
-		synchronized (this.pool) {
-			if (!pool.isEmpty()) {
-				pool.remove(t);
 			}
 		}
 	}
@@ -93,9 +63,6 @@ public class ThreadPool {
 	public void add_tasks(Runnable task) {
 		synchronized (tasks) {
 			tasks.offer(task);
-			if (tasks.size() >= this.TASK_CRITICAL_SIZE) {
-				add_labour(new CasualLaborer());
-			}
 			tasks.notify();
 		}
 	}

@@ -13,3 +13,189 @@
 2017 01 09 03:51:08 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
 2017 01 09 03:51:18 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
 2017 01 09 03:51:18 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 04:28:18 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 04:28:26 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 04:28:26 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 04:33:48 下午 : ERROR [Thread-4] socket error
+2017 01 09 04:33:48 下午 : ERROR [Thread-3] socket error
+2017 01 09 04:33:48 下午 : ERROR [Thread-6] socket error
+2017 01 09 04:33:48 下午 : ERROR [Thread-5] socket error
+2017 01 09 04:37:50 下午 : ERROR [Thread-6] socket error
+2017 01 09 04:37:50 下午 : ERROR [Thread-4] socket error
+2017 01 09 04:37:50 下午 : ERROR [Thread-3] socket error
+2017 01 09 04:37:50 下午 : ERROR [Thread-5] socket error
+2017 01 09 04:38:57 下午 : ERROR [Thread-5] socket error
+2017 01 09 04:38:57 下午 : ERROR [Thread-6] socket error
+2017 01 09 04:38:57 下午 : ERROR [Thread-4] socket error
+2017 01 09 04:38:57 下午 : ERROR [Thread-5] socket error
+2017 01 09 04:40:25 下午 : ERROR [Thread-6] socket error
+2017 01 09 04:40:25 下午 : ERROR [Thread-4] socket error
+2017 01 09 04:40:25 下午 : ERROR [Thread-3] socket error
+2017 01 09 04:40:25 下午 : ERROR [Thread-5] socket error
+2017 01 09 04:43:19 下午 : ERROR [Thread-6] socket error
+2017 01 09 04:49:36 下午 : ERROR [Thread-4] socket error
+2017 01 09 04:49:36 下午 : ERROR [Thread-3] socket error
+2017 01 09 04:49:36 下午 : ERROR [Thread-6] socket error
+2017 01 09 04:49:36 下午 : ERROR [Thread-4] socket error
+2017 01 09 04:53:33 下午 : ERROR [Thread-6] socket error
+2017 01 09 04:53:33 下午 : ERROR [Thread-5] socket error
+2017 01 09 04:53:33 下午 : ERROR [Thread-4] socket error
+2017 01 09 04:53:33 下午 : ERROR [Thread-3] socket error
+2017 01 09 05:07:47 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:07:54 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:07:54 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 05:09:16 下午 : ERROR [Thread-5] socket error
+2017 01 09 05:09:16 下午 : ERROR [Thread-2] socket error
+2017 01 09 05:09:16 下午 : ERROR [Thread-4] socket error
+2017 01 09 05:09:16 下午 : ERROR [Thread-3] socket error
+2017 01 09 05:11:07 下午 : ERROR [Thread-2] socket error
+2017 01 09 05:11:07 下午 : ERROR [Thread-4] socket error
+2017 01 09 05:11:07 下午 : ERROR [Thread-3] socket error
+2017 01 09 05:11:07 下午 : ERROR [Thread-5] socket error
+2017 01 09 05:13:56 下午 : ERROR [Thread-2] socket error
+2017 01 09 05:13:56 下午 : ERROR [Thread-4] socket error
+2017 01 09 05:13:56 下午 : ERROR [Thread-5] socket error
+2017 01 09 05:13:56 下午 : ERROR [Thread-3] socket error
+2017 01 09 05:15:45 下午 : ERROR [Thread-4] socket error
+2017 01 09 05:15:45 下午 : ERROR [Thread-2] socket error
+2017 01 09 05:15:45 下午 : ERROR [Thread-5] socket error
+2017 01 09 05:15:45 下午 : ERROR [Thread-3] socket error
+2017 01 09 05:19:01 下午 : ERROR [Thread-2] socket error
+2017 01 09 05:19:01 下午 : ERROR [Thread-5] socket error
+2017 01 09 05:19:01 下午 : ERROR [Thread-4] socket error
+2017 01 09 05:19:01 下午 : ERROR [Thread-3] socket error
+2017 01 09 05:20:36 下午 : ERROR [Thread-3] socket error
+2017 01 09 05:20:36 下午 : ERROR [Thread-5] socket error
+2017 01 09 05:20:36 下午 : ERROR [Thread-2] socket error
+2017 01 09 05:20:36 下午 : ERROR [Thread-4] socket error
+2017 01 09 05:21:35 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:21:41 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:21:41 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 05:23:00 下午 : ERROR [Thread-4] socket error
+2017 01 09 05:23:00 下午 : ERROR [Thread-5] socket error
+2017 01 09 05:23:00 下午 : ERROR [Thread-2] socket error
+2017 01 09 05:23:00 下午 : ERROR [Thread-3] socket error
+2017 01 09 05:25:11 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:25:19 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:25:19 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 05:26:28 下午 : ERROR [Thread-4] socket error
+2017 01 09 05:26:28 下午 : ERROR [Thread-2] socket error
+2017 01 09 05:26:28 下午 : ERROR [Thread-5] socket error
+2017 01 09 05:26:28 下午 : ERROR [Thread-3] socket error
+2017 01 09 05:28:45 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:28:53 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:28:53 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 05:30:11 下午 : ERROR [Thread-3] socket error
+2017 01 09 05:30:11 下午 : ERROR [Thread-2] socket error
+2017 01 09 05:30:11 下午 : ERROR [Thread-7] socket error
+2017 01 09 05:30:11 下午 : ERROR [Thread-4] socket error
+2017 01 09 05:32:58 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:33:04 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:33:04 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 05:35:00 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:35:07 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:35:07 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 05:37:25 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:37:32 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:37:32 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 05:42:46 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:42:53 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:42:53 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 05:47:35 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:47:43 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 05:47:43 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 05:48:27 下午 : ERROR [Thread-5] socket error
+2017 01 09 05:48:27 下午 : ERROR [Thread-2] socket error
+2017 01 09 05:48:27 下午 : ERROR [Thread-4] socket error
+2017 01 09 05:48:27 下午 : ERROR [Thread-3] socket error
+2017 01 09 05:49:44 下午 : INFO [Thread-8] reborn socket fail��remote host�� 127.0.0.1:8081
+2017 01 09 05:49:55 下午 : INFO [Thread-8] reborn socket fail��remote host�� 127.0.0.1:8081
+2017 01 09 05:50:06 下午 : INFO [Thread-8] reborn socket fail��remote host�� 127.0.0.1:8081
+2017 01 09 05:50:17 下午 : INFO [Thread-8] reborn socket fail��remote host�� 127.0.0.1:8081
+2017 01 09 05:59:56 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:00:02 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:00:02 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 06:02:31 下午 : ERROR [Thread-4] socket error
+2017 01 09 06:02:31 下午 : ERROR [Thread-2] socket error
+2017 01 09 06:02:31 下午 : ERROR [Thread-5] socket error
+2017 01 09 06:02:31 下午 : ERROR [Thread-3] socket error
+2017 01 09 06:04:38 下午 : ERROR [Thread-3] socket error
+2017 01 09 06:04:38 下午 : ERROR [Thread-4] socket error
+2017 01 09 06:04:38 下午 : ERROR [Thread-5] socket error
+2017 01 09 06:04:38 下午 : ERROR [Thread-2] socket error
+2017 01 09 06:10:19 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:10:26 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:10:26 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 06:11:07 下午 : INFO [Thread-8] reborn socket fail��remote host�� 127.0.0.1:8080
+2017 01 09 06:11:10 下午 : INFO [Thread-8] reborn socket fail��remote host�� 127.0.0.1:8080
+2017 01 09 06:19:56 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:20:04 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:20:04 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 06:20:25 下午 : INFO [Thread-12] reborn socket fail��remote host�� 127.0.0.1:8080
+2017 01 09 06:20:27 下午 : INFO [Thread-12] reborn socket fail��remote host�� 127.0.0.1:8080
+2017 01 09 06:23:23 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:23:29 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:23:29 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 06:23:36 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:23:36 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 06:23:36 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8082
+2017 01 09 06:23:45 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:23:45 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 06:23:45 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8082
+2017 01 09 06:23:45 下午 : INFO [Thread-12] socket connect remote node success, address:127.0.0.1:8083
+2017 01 09 06:26:58 下午 : ERROR [Thread-7] socket error
+2017 01 09 06:26:58 下午 : ERROR [Thread-6] socket error
+2017 01 09 06:26:58 下午 : ERROR [Thread-2] socket error
+2017 01 09 06:26:58 下午 : ERROR [Thread-4] socket error
+2017 01 09 06:26:58 下午 : ERROR [Thread-5] socket error
+2017 01 09 06:26:58 下午 : ERROR [Thread-3] socket error
+2017 01 09 06:36:07 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:36:13 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:36:13 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 06:37:31 下午 : ERROR [Thread-5] socket error
+2017 01 09 06:37:31 下午 : ERROR [Thread-3] socket error
+2017 01 09 06:37:31 下午 : ERROR [Thread-2] socket error
+2017 01 09 06:37:31 下午 : ERROR [Thread-4] socket error
+2017 01 09 06:40:32 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:40:39 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:40:39 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 06:42:03 下午 : ERROR [Thread-3] socket error
+2017 01 09 06:42:03 下午 : ERROR [Thread-4] socket error
+2017 01 09 06:42:03 下午 : ERROR [Thread-5] socket error
+2017 01 09 06:42:03 下午 : ERROR [Thread-2] socket error
+2017 01 09 06:49:21 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:49:28 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:49:28 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 06:50:17 下午 : ERROR [Thread-4] socket error
+2017 01 09 06:50:17 下午 : ERROR [Thread-2] socket error
+2017 01 09 06:50:17 下午 : ERROR [Thread-3] socket error
+2017 01 09 06:50:17 下午 : ERROR [Thread-5] socket error
+2017 01 09 06:51:41 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:51:48 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:51:48 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 06:52:43 下午 : ERROR [Thread-5] socket error
+2017 01 09 06:52:43 下午 : ERROR [Thread-4] socket error
+2017 01 09 06:52:43 下午 : ERROR [Thread-2] socket error
+2017 01 09 06:52:43 下午 : ERROR [Thread-3] socket error
+2017 01 09 06:53:58 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:54:05 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 06:54:05 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 06:55:01 下午 : ERROR [Thread-6] socket error
+2017 01 09 06:55:01 下午 : ERROR [Thread-4] socket error
+2017 01 09 06:55:01 下午 : ERROR [Thread-3] socket error
+2017 01 09 06:55:01 下午 : ERROR [Thread-2] socket error
+2017 01 09 06:56:18 下午 : ERROR [Thread-3] socket error
+2017 01 09 06:56:18 下午 : ERROR [Thread-6] socket error
+2017 01 09 06:56:18 下午 : ERROR [Thread-2] socket error
+2017 01 09 06:56:18 下午 : ERROR [Thread-4] socket error
+2017 01 09 07:00:49 下午 : INFO [Thread-11] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 07:00:58 下午 : INFO [Thread-11] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 07:00:58 下午 : INFO [Thread-11] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 07:04:44 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 07:04:51 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 07:04:51 下午 : INFO [Thread-8] socket connect remote node success, address:127.0.0.1:8081
+2017 01 09 07:05:52 下午 : INFO [Thread-8] reborn socket fail��remote host�� 127.0.0.1:8080
+2017 01 09 07:05:55 下午 : INFO [Thread-8] reborn socket fail��remote host�� 127.0.0.1:8080
+2017 01 09 07:18:35 下午 : INFO [Thread-152] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 07:18:44 下午 : INFO [Thread-152] socket connect remote node success, address:127.0.0.1:8080
+2017 01 09 07:18:44 下午 : INFO [Thread-152] socket connect remote node success, address:127.0.0.1:8081
