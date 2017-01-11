@@ -1,4 +1,4 @@
-package util;
+package dbUnit;
 
 public class RingBuffer {
 	private volatile int writeFinish = 0;// 生产者线程向消费者线程发消息

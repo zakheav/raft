@@ -7,30 +7,23 @@ import communicationUnit.ConcurrentSocket;
 import communicationUnit.SendTask;
 import communicationUnit.SocketList;
 import communicationUnit.ThreadPool;
-import raftProcedureUnit.ApplyMethod;
+import raftProcedureUnit.QueryMethod;
 
 public class QueryTask implements Runnable {
 
 	private final String command;
 	private final String commandId;
-	private ApplyMethod applyMethod;
+	private QueryMethod queryMethod;
 
 	public QueryTask(String command, String commandId) {
 		this.command = command;
 		this.commandId = commandId;
-		String className = new XML().get_applyMethod();
-		try {
-			Class<?> classObject = Class.forName(className);
-			this.applyMethod = (ApplyMethod) classObject.newInstance();
-		} catch (Exception e) {
-			this.applyMethod = null;
-			e.printStackTrace();
-		}
+		this.queryMethod = new QueryMethod();
 	}
 
 	@Override
 	public void run() {
-		List<Map<String, Object>> resultMap = applyMethod.query(command);
+		List<Map<String, Object>> resultMap = queryMethod.query(command);
 		String result = JSON.ListToJSON(resultMap);
 		ConcurrentSocket socket = SocketList.get_instance().querySocket(commandId);
 		if (socket != null) {

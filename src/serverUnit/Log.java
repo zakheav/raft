@@ -4,8 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import util.DBpool;
+import dbUnit.DB;
 
 public class Log {
 	private LinkedList<LogEntry> log;
@@ -19,23 +18,12 @@ public class Log {
 	public int appliedIndex;
 
 	public Log() {
-		
-		String build_logTable = "CREATE TABLE IF NOT EXISTS `log` ( `logIndex` int(11) DEFAULT NULL, `term` int(11) DEFAULT NULL, `command` varchar(1024) DEFAULT NULL, `commandId` varchar(64) DEFAULT NULL, `commit` int(11) DEFAULT 0) ENGINE=InnoDB DEFAULT CHARSET=utf8";
-		DBpool.get_instance().executeUpdate(build_logTable);
-		
-		// this guarantee the transaction atomic and duration
-		String deleteString = "delete from log where commit = 0";
-		DBpool.get_instance().executeUpdate(deleteString);
+		DB.dbpool.build_log();
 		
 		this.log = new LinkedList<LogEntry>();
 
-		String queryString = "select max(logIndex) as lastLogIndex from log";
-		Object o = DBpool.get_instance().executeQuery(queryString).get(0).get("lastLogIndex");
-		lastLogIndexCache = o == null ? 0 : (Integer) o;
-
-		queryString = "select term from log where logIndex = " + lastLogIndexCache;
-		lastLogTermCache = DBpool.get_instance().executeQuery(queryString).isEmpty() ? 1
-				: (Integer) DBpool.get_instance().executeQuery(queryString).get(0).get("term");
+		lastLogIndexCache = DB.dbpool.get_lastLogIndex();
+		lastLogTermCache = DB.dbpool.get_lastLogTerm(lastLogIndexCache);
 
 		this.commitIndex = get_lastLogIndex();
 		this.appliedIndex = this.commitIndex;
@@ -43,8 +31,7 @@ public class Log {
 		// cache recent submit commandId
 		this.recentAppliedCmd = new LinkedList<String>();
 		int temp = lastLogIndexCache - 10;
-		queryString = "select logIndex, commandId from log where logIndex > " + temp + " order by logIndex asc";
-		List<Map<String, Object>> results = DBpool.get_instance().executeQuery(queryString);
+		List<Map<String, Object>> results = DB.dbpool.get_recentSubmitCommandId(temp);
 		for (Map<String, Object> row : results) {
 			this.recentAppliedCmd.add((String) row.get("commandId"));
 		}
@@ -53,30 +40,24 @@ public class Log {
 	public synchronized int get_lastLogIndex() {
 		if (indexCacheDirty) {
 			if (log.isEmpty()) {
-				String queryString = "select max(logIndex) as lastLogIndex from log";
-				Object o = DBpool.get_instance().executeQuery(queryString).get(0).get("lastLogIndex");
-				lastLogIndexCache = o == null ? 0 : (Integer) o;
+				lastLogIndexCache = DB.dbpool.get_lastLogIndex();
 			} else {
 				lastLogIndexCache = log.peekLast().index;
 			}
 			indexCacheDirty = false;
 		}
-
 		return lastLogIndexCache;
 	}
 
 	public synchronized int get_lastLogTerm() {
 		if (termCacheDirty) {
 			if (log.isEmpty()) {
-				String queryString = "select term from log where logIndex = " + get_lastLogIndex();
-				lastLogTermCache = DBpool.get_instance().executeQuery(queryString).isEmpty() ? 1
-						: (Integer) DBpool.get_instance().executeQuery(queryString).get(0).get("term");
+				lastLogTermCache = DB.dbpool.get_lastLogTerm(get_lastLogIndex());
 			} else {
 				lastLogTermCache = log.peekLast().term;
 			}
 			termCacheDirty = false;
 		}
-
 		return lastLogTermCache;
 	}
 
@@ -85,8 +66,7 @@ public class Log {
 			return new LogEntry(0, null, null, 0);
 		}
 		if (log.isEmpty() || log.peekFirst().index > index) {
-			String queryString = "select * from log where logIndex = " + index;
-			List<Map<String, Object>> entryList = DBpool.get_instance().executeQuery(queryString);
+			List<Map<String, Object>> entryList = DB.dbpool.get_logByIndex(index);
 			if (entryList.isEmpty()) {
 				return null;
 			} else {
@@ -103,8 +83,9 @@ public class Log {
 		}
 		return null;
 	}
-
-	public synchronized void delete_logEntry(int begin) {// delete log which index >= begin
+	
+	// delete log which index >= begin
+	public synchronized void delete_logEntry(int begin) {
 		Iterator<LogEntry> it = log.iterator();
 		while (it.hasNext()) {
 			LogEntry log = it.next();
@@ -128,8 +109,9 @@ public class Log {
 		}
 		this.recentAppliedCmd.add(commandId);
 	}
-
-	public synchronized void logClear() {// clean unnecessary log in memory
+	
+	// clean unnecessary log in memory
+	public synchronized void logClear() {
 		Iterator<LogEntry> it = log.iterator();
 		while (it.hasNext()) {
 			if (it.next().index < appliedIndex / 2) {

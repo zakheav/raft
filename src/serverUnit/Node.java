@@ -3,20 +3,17 @@ package serverUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.PropertyConfigurator;
-
 import communicationUnit.ThreadPool;
 import connectionMaintenanceUnit.HelloThread;
 import connectionMaintenanceUnit.WelcomeThread;
 import raftProcedureUnit.ApplyLogThread;
 import raftProcedureUnit.MassageProcessThread;
 import timerUnit.TimerThread;
-import util.DBpool;
 import util.XML;
 
 public class Node {
-	// µ¥Àý
+	// singleton
 	private static Node instance = new Node();
 
 	@SuppressWarnings("unchecked")
@@ -43,7 +40,6 @@ public class Node {
 
 	public void start() {
 		PropertyConfigurator.configure("conf/log4j.properties");
-		DBpool.get_instance();// start DB pool
 		ThreadPool.get_instance();// start thread pool
 		new Thread(new HelloThread()).start();
 		new Thread(new WelcomeThread()).start();

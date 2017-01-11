@@ -14,7 +14,7 @@ import util.JSON;
 
 public class SocketList {
 	private Logger log = Logger.getLogger(SocketList.class);
-	// µ¥Àý
+	// ï¿½ï¿½ï¿½ï¿½
 	private static SocketList instance = new SocketList();
 
 	private SocketList() {
@@ -26,10 +26,13 @@ public class SocketList {
 	public static SocketList get_instance() {
 		return instance;
 	}
-
-	private final Map<String, ConcurrentSocket> helloSocketMap;// remote ip:port-socket pair (initiative connect socket)
-	private final Map<String, ConcurrentSocket> welcomeSocketMap;// remote ip:port-socket pair (passive connect socket)
-	private final Map<String, ConcurrentSocket> clientSocketMap;// client_cmd_id-socket pair
+	
+	// remote ip:port-socket pair (initiative connect socket)
+	private final Map<String, ConcurrentSocket> helloSocketMap;
+	// remote ip:port-socket pair (passive connect socket)
+	private final Map<String, ConcurrentSocket> welcomeSocketMap;
+	// client_cmd_id-socket pair
+	private final Map<String, ConcurrentSocket> clientSocketMap;
 
 	public synchronized ConcurrentSocket querySocket(String key) {// get socket by address
 		if (helloSocketMap.get(key) != null)
@@ -130,7 +133,7 @@ public class SocketList {
 					RecvTask recvTask = new RecvTask(cs);
 					ThreadPool.get_instance().add_tasks(recvTask);
 				} catch (IOException e) {
-					log.info("reborn socket fail£¬remote host£º " + ip + ":" + port);
+					log.info("reborn socket fail remote host " + ip + ":" + port);
 				}
 			}
 		}

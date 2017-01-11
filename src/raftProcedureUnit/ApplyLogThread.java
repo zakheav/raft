@@ -7,23 +7,11 @@ import communicationUnit.ConcurrentSocket;
 import communicationUnit.SendTask;
 import communicationUnit.SocketList;
 import communicationUnit.ThreadPool;
+import dbUnit.DB;
 import serverUnit.Node;
-import util.DBpool;
 import util.JSON;
-import util.XML;
 
 public class ApplyLogThread implements Runnable {
-	private ApplyMethod applyMethod;
-
-	public ApplyLogThread() {
-		String className = new XML().get_applyMethod();
-		try {
-			Class<?> classObject = Class.forName(className);
-			applyMethod = (ApplyMethod) classObject.newInstance();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	@Override
 	public void run() {
@@ -71,12 +59,7 @@ public class ApplyLogThread implements Runnable {
 
 				// check no duplicate
 				if (!Node.get_instance().server.log.checkAppliedBefore(commandId)) {
-					String queryString = "insert into log(logIndex, term, command, commandId, commit) values("
-							+ logIndex + "," + term + ",'" + command + "','" + commandId + "', 0)";
-					DBpool.get_instance().executeUpdate(queryString);// log persistence
-					applyMethod.apply(command);// submit request in log
-					String updateString = "update log set commit = 1 where commandId = '" + commandId + "'";
-					DBpool.get_instance().executeUpdate(updateString);// commit
+					DB.dbpool.commit_command(logIndex, term, command, commandId);
 				}
 
 				if (Node.get_instance().server.status == 2) {
