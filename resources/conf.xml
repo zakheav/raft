@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <recipe>
-	<nodeId>0</nodeId><!-- the index of this node -->
+	<nodeId>2</nodeId><!-- the index of this node -->
 	<mysql>
-		<url>jdbc:mysql://127.0.0.1:3306/log0</url><!-- the database configure -->
+		<url>jdbc:mysql://127.0.0.1:3306/log2</url><!-- the database configure -->
 		<user>root</user>
 		<password></password>
 	</mysql>

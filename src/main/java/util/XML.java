@@ -16,7 +16,7 @@ public class XML {
 		Map<String, String> r = new HashMap<String, String>();
 		SAXReader reader = new SAXReader();
 		try {
-			Document document = reader.read(new File("conf/conf.xml"));
+			Document document = reader.read(new File("resources/conf.xml"));
 			Element root = document.getRootElement();
 			Element mysql = root.element("mysql");
 			String url = mysql.element("url").getText();
@@ -36,7 +36,7 @@ public class XML {
 		Map<String, Object> r = new HashMap<String, Object>();
 		SAXReader reader = new SAXReader();
 		try {
-			Document document = reader.read(new File("conf/conf.xml"));
+			Document document = reader.read(new File("resources/conf.xml"));
 			Element root = document.getRootElement();
 			Element nodeList = root.element("nodeList");
 			@SuppressWarnings("unchecked")

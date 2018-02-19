@@ -39,7 +39,7 @@ public class Node {
 	public final Server server;
 
 	public void start() {
-		PropertyConfigurator.configure("conf/log4j.properties");
+		PropertyConfigurator.configure("resources/log4j.properties");
 		ThreadPool.get_instance();// start thread pool
 		new Thread(new HelloThread()).start();
 		new Thread(new WelcomeThread()).start();
