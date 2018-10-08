@@ -41,7 +41,9 @@ public class ApplyLogThread implements Runnable {
 						--N;
 					}
 				}
-				Node.get_instance().server.log.commitIndex = Math.max(N, Node.get_instance().server.log.commitIndex);
+				if (Node.get_instance().server.log.get_logByIndex(N).term == Node.get_instance().server.currentTerm) {
+					Node.get_instance().server.log.commitIndex = Math.max(N, Node.get_instance().server.log.commitIndex);
+				}
 			}
 
 			// submit log that after AppliedIndex, before CommitIndex (include CommitIndex) into database, response to Client
